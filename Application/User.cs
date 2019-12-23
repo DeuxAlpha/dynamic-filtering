@@ -1,6 +1,6 @@
 using System;
 
-namespace ExpressionTests.App.Models
+namespace Application
 {
     public interface IUser
     {

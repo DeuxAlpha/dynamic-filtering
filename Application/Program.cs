@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using ExpressionTests.App.Models;
 
-namespace Atest
+namespace Application
 {
     class Program
     {
@@ -18,6 +16,12 @@ namespace Atest
                     Comparison = Comparison.GreaterThanOrEqual,
                     Value = 25
                 },
+                new ExpressionFilter
+                {
+                    PropertyName = nameof(User.Age),
+                    Comparison = Comparison.GreaterThanOrEqual,
+                    Value = 20
+                }
             };
 
             var result = Users.Where(ExpressionCreator.ConstructAndExpressionTree<User>(filters).Compile());

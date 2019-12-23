@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Atest
+namespace Application
 {
     public class ExpressionCreator
     {
@@ -10,8 +10,8 @@ namespace Atest
         {
             if (filters.Count == 0) return null;
 
-            var parameter = Expression.Parameter(typeof(T), "t");
-            Expression expression = null;
+            var parameter = Expression.Parameter(typeof(T));
+            Expression expression;
 
             if (filters.Count == 1)
                 expression = ExpressionRetriever.GetExpression<T>(parameter, filters[0]);
@@ -21,7 +21,7 @@ namespace Atest
                 expression = ExpressionRetriever.GetExpression<T>(parameter, filters[0]);
                 for (var i = 1; i < filters.Count; i++)
                 {
-                    expression = Expression.And(expression,
+                    expression = Expression.Or(expression,
                         ExpressionRetriever.GetExpression<T>(parameter, filters[i]));
                 }
             }

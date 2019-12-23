@@ -1,11 +1,11 @@
-namespace Atest
+namespace Application
 {
     public enum Comparison
     {
         Equal,
         LessThan,
         LessThanOrEqual,
-        GreaterThan,  
+        GreaterThan,
         GreaterThanOrEqual,
         NotEqual,
         Contains, //for strings
