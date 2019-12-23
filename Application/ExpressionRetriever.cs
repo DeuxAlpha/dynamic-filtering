@@ -6,7 +6,8 @@ namespace Application
 {
     public class ExpressionRetriever
     {
-        private static readonly MethodInfo ContainsMethod = typeof(string).GetMethod(nameof(string.Contains));
+        private static readonly MethodInfo ContainsMethod =
+            typeof(string).GetMethod(nameof(string.Contains), new[] {typeof(string)});
 
         private static readonly MethodInfo StartsWithMethod =
             typeof(string).GetMethod(nameof(string.StartsWith), new[] {typeof(string)});

@@ -4,6 +4,5 @@ namespace Application
     {
         And,
         Or,
-        Xor
     }
 }

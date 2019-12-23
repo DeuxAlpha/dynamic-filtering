@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Application
 {
@@ -13,19 +14,40 @@ namespace Application
                 new ExpressionFilter
                 {
                     PropertyName = nameof(User.Age),
-                    Comparison = Comparison.GreaterThanOrEqual,
-                    Value = 25
+                    Comparison = Comparison.Equal,
+                    Value = 20,
+                },
+                new ExpressionFilter
+                {
+                    PropertyName = nameof(User.Username),
+                    Comparison = Comparison.StartsWith,
+                    Value = "jhan",
+                    Relation = Relation.And
                 },
                 new ExpressionFilter
                 {
                     PropertyName = nameof(User.Age),
                     Comparison = Comparison.GreaterThanOrEqual,
-                    Value = 20
+                    Value = 25,
+                    Relation = Relation.Or
+                },
+                new ExpressionFilter
+                {
+                    PropertyName = nameof(User.FirstName),
+                    Comparison = Comparison.Equal,
+                    Value = "Peter",
+                    Relation = Relation.And
                 }
             };
 
-            var result = Users.Where(ExpressionCreator.ConstructAndExpressionTree<User>(filters).Compile());
+            var dynamicResult = Filter.MultipleDynamic<User>(Users.Where, filters);
+
+            foreach (var user in dynamicResult)
+            {
+                Console.WriteLine(user.Username);
+            }
         }
+
         private static readonly List<User> Users = new List<User>
         {
             new User
