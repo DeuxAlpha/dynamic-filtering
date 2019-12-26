@@ -1,4 +1,4 @@
-namespace Application
+namespace Filtering.Models
 {
     public enum Relation
     {

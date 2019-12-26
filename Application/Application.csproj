@@ -6,4 +6,12 @@
         <RootNamespace>Application</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Filtering\Filtering.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.0" />
+    </ItemGroup>
+
 </Project>

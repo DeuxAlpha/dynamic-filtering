@@ -1,51 +1,105 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Filtering;
+using Filtering.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        private static readonly ContextExample Context = new ContextExample();
+        private static readonly List<ExpressionFilter> Filters = new List<ExpressionFilter>
         {
-            var filters = new List<ExpressionFilter>
+            new ExpressionFilter
             {
-                new ExpressionFilter
-                {
-                    PropertyName = nameof(User.Age),
-                    Comparison = Comparison.Equal,
-                    Value = 20,
-                },
-                new ExpressionFilter
-                {
-                    PropertyName = nameof(User.Username),
-                    Comparison = Comparison.StartsWith,
-                    Value = "jhan",
-                    Relation = Relation.And
-                },
-                new ExpressionFilter
-                {
-                    PropertyName = nameof(User.Age),
-                    Comparison = Comparison.GreaterThanOrEqual,
-                    Value = 25,
-                    Relation = Relation.Or
-                },
-                new ExpressionFilter
-                {
-                    PropertyName = nameof(User.FirstName),
-                    Comparison = Comparison.Equal,
-                    Value = "Peter",
-                    Relation = Relation.And
-                }
-            };
-
-            var dynamicResult = Filter.MultipleDynamic<User>(Users.Where, filters);
-
-            foreach (var user in dynamicResult)
+                PropertyName = nameof(User.Age),
+                Comparison = Comparison.Equal,
+                Value = 20,
+            },
+            new ExpressionFilter
             {
-                Console.WriteLine(user.Username);
+                PropertyName = nameof(User.Username),
+                Comparison = Comparison.StartsWith,
+                Value = "jhan",
+                Relation = Relation.And
+            },
+            new ExpressionFilter
+            {
+                PropertyName = nameof(User.Age),
+                Comparison = Comparison.GreaterThanOrEqual,
+                Value = 25,
+                Relation = Relation.Or
+            },
+            new ExpressionFilter
+            {
+                PropertyName = nameof(User.FirstName),
+                Comparison = Comparison.Equal,
+                Value = "Peter",
+                Relation = Relation.And
             }
+        };
+
+        public static async Task Main()
+        {
+            var efUsers = await GetMultipleEfCore();
+            var efUser = await GetSingleEfCore();
+
+            var efUserGeneric = await GetSingleEfCoreGeneric(Context.Users);
+            var userGeneric = await GetSingleGeneric(Users);
+        }
+
+        private static async Task<IEnumerable<User>> GetMultipleEfCore()
+        {
+            // For multiple w/ EF Core
+            var results = ExpressionCreator.Build<User>(Filters)
+                .Select(Context.Users.Where)
+                .Cast<IEnumerable<User>>()
+                .ToList();
+
+            var collectionSet = new List<User>();
+            foreach (var result in results) collectionSet.AddRange(result);
+
+            return await Task.FromResult(collectionSet.Distinct());
+        }
+
+        private static async Task<User> GetSingleEfCore()
+        {
+            var results = ExpressionCreator.Build<User>(Filters)
+                .Select(Context.Users.Where)
+                .Cast<IEnumerable<User>>()
+                .ToList();
+
+            var collectionSet = new List<User>();
+            foreach (var result in results) collectionSet.AddRange(result);
+
+            return await Task.FromResult(collectionSet.Distinct().Single());
+        }
+
+        private static async Task<T> GetSingleEfCoreGeneric<T>(IQueryable<T> collection)
+        {
+            var results = ExpressionCreator.Build<T>(Filters)
+                .Select(collection.Where)
+                .Cast<IEnumerable<T>>()
+                .ToList();
+
+            var collectionSet = new List<T>();
+            foreach (var result in results) collectionSet.AddRange(result);
+
+            return await Task.FromResult(collectionSet.Distinct().Single());
+        }
+
+        private static async Task<T> GetSingleGeneric<T>(IEnumerable<T> collection)
+        {
+            var results = ExpressionCreator.Build<T>(Filters)
+                .Select(expression => collection.Where(expression.Compile()));
+
+            var collectionSet = new List<T>();
+            foreach (var result in results) collectionSet.AddRange(result);
+
+            return await Task.FromResult(collectionSet.Distinct().Single());
         }
 
         private static readonly List<User> Users = new List<User>
