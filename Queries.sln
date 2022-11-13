@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Filtering", "Filtering\Filtering.csproj", "{49811269-E9A3-43F8-8906-BED590844410}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryingOmega", "QueryingOmega\QueryingOmega.csproj", "{11084A4C-7CC8-47AC-8C7D-ADF57348B1A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{49811269-E9A3-43F8-8906-BED590844410}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49811269-E9A3-43F8-8906-BED590844410}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49811269-E9A3-43F8-8906-BED590844410}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11084A4C-7CC8-47AC-8C7D-ADF57348B1A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11084A4C-7CC8-47AC-8C7D-ADF57348B1A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11084A4C-7CC8-47AC-8C7D-ADF57348B1A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11084A4C-7CC8-47AC-8C7D-ADF57348B1A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
